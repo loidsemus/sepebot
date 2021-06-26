@@ -24,17 +24,17 @@ public class CommandListener extends ListenerAdapter {
         Call<CreateRoomResponse> call;
         OptionMapping videoOption = event.getOption("video");
         if (videoOption == null) {
-            call = service.createRoomWithoutVideo("w2gapikey");
+            call = service.createRoomWithoutVideo(System.getenv("W2G_TOKEN"));
         }
         else {
             call = service.createRoomWithVideo(new W2GService.RequestBody(
-                    "w2gapikey",
+                    System.getenv("W2G_TOKEN"),
                     videoOption.getAsString()));
         }
 
         try {
             Response<CreateRoomResponse> response = call.execute();
-            if(response.body() == null) {
+            if (response.body() == null) {
                 event.reply("Något gick snett bre").setEphemeral(true).queue();
                 return;
             }

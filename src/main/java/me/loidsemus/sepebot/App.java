@@ -15,6 +15,10 @@ import java.util.Collections;
 
 public class App {
 
+    public static void main(String[] args) throws LoginException {
+        new App().start();
+    }
+
     private void start() throws LoginException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://w2g.tv")
@@ -23,7 +27,7 @@ public class App {
 
         W2GService service = retrofit.create(W2GService.class);
 
-        JDA jda = JDABuilder.createLight("discordtoken",
+        JDA jda = JDABuilder.createLight(System.getenv("DISCORD_TOKEN"),
                 Collections.emptyList())
                 .setActivity(Activity.playing("/w2g"))
                 .addEventListeners(new CommandListener(service))
@@ -31,10 +35,6 @@ public class App {
 
         jda.upsertCommand(new CommandData("w2g", "Skapa ett W2G-rum")
                 .addOption(OptionType.STRING, "video", "Video som ska visas", false)).queue();
-    }
-
-    public static void main(String[] args) throws LoginException {
-        new App().start();
     }
 
 }
